@@ -100,4 +100,13 @@ class Swissunihockey_Public {
 
 	}
 
+	/**
+	 * Get the data from swissunihockey.ch
+	 * 
+	 * @since 1.0.0
+	 */
+	public function requestData() {
+
+	}
+
 }

@@ -103,10 +103,10 @@ class Swissunihockey_Admin {
 
 	public function addPluginAdminMenu() {
 		//add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
-		add_menu_page(  $this->plugin_name, 'SwissUnihockey', 'administrator', $this->plugin_name, array( $this, 'displayPluginAdminDashboard' ), 'dashicons-database-import', 26 );
+		add_menu_page(  $this->plugin_name, 'SwissFloorball', 'administrator', $this->plugin_name, array( $this, 'displayPluginAdminDashboard' ), 'dashicons-database-import', 26 );
 		
 		//add_submenu_page( '$parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
-		add_submenu_page( $this->plugin_name, 'Settings Page Settings', 'Einstellungen', 'administrator', $this->plugin_name.'-settings', array( $this, 'displayPluginAdminSettings' ));
+		add_submenu_page( $this->plugin_name, 'Swiss Floorball Settings', 'Einstellungen', 'administrator', $this->plugin_name.'-settings', array( $this, 'displayPluginAdminSettings' ));
 	}
 	public function displayPluginAdminDashboard() {
 		require_once 'partials/'.$this->plugin_name.'-admin-display.php';
@@ -123,7 +123,7 @@ class Swissunihockey_Admin {
 	public function settingsPageSettingsMessages($error_message){
 		switch ($error_message) {
 				case '1':
-						$message = __( 'There was an error adding this setting. Please try again.  If this persists, shoot us an email.', 'my-text-domain' );                 $err_code = esc_attr( 'settings_page_example_setting' );                 $setting_field = 'settings_page_example_setting';                 
+						$message = __( 'There was an error adding this setting. Please try again.  If this persists, shoot us an email.', 'my-text-domain' );                 $err_code = esc_attr( 'swissfloorball_api_key' );                 $setting_field = 'swissfloorball_api_key';                 
 						break;
 		}
 		$type = 'error';
@@ -135,7 +135,7 @@ class Swissunihockey_Admin {
 			);
 	}
 	public function registerAndBuildFields() {
-			/**
+		/**
 		 * First, we add_settings_section. This is necessary since all future settings must belong to one.
 		 * Second, add_settings_field
 		 * Third, register_setting
@@ -154,16 +154,16 @@ class Swissunihockey_Admin {
 		$args = array (
 							'type'      => 'input',
 							'subtype'   => 'text',
-							'id'    => 'settings_page_example_setting',
-							'name'      => 'settings_page_example_setting',
+							'id'    => 'swissfloorball_api_key',
+							'name'      => 'swissfloorball_api_key',
 							'required' => 'true',
 							'get_options_list' => '',
 							'value_type'=>'normal',
 							'wp_data' => 'option'
 					);
 		add_settings_field(
-			'settings_page_example_setting',
-			'Example Setting',
+			'swissfloorball_api_key',
+			'Swiss Floorball API Key',
 			array( $this, 'settings_page_render_settings_field' ),
 			'settings_page_general_settings',
 			'settings_page_general_section',
@@ -173,12 +173,12 @@ class Swissunihockey_Admin {
 
 		register_setting(
 						'settings_page_general_settings',
-						'settings_page_example_setting'
+						'swissfloorball_api_key'
 						);
 
 	}
 	public function settings_page_display_general_account() {
-		echo '<p>These settings apply to all Plugin Name functionality.</p>';
+		echo '<p>Please fill the fields with the requested options to guarante a properly functionality of the plugin.</p>';
 	} 
 	public function settings_page_render_settings_field($args) {
 			/* EXAMPLE INPUT
