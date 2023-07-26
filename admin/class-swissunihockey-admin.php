@@ -170,10 +170,44 @@ class Swissunihockey_Admin {
 			$args
 		);
 
+		register_setting(
+			'settings_page_general_settings',
+			'swissfloorball_api_key'
+			);
+
+		add_settings_section(
+			// ID used to identify this section and with which to register options
+			'settings_page_general_section', 
+			// Title to be displayed on the administration page
+			'',  
+			// Callback used to render the description of the section
+				array( $this, 'settings_page_display_general_account' ),    
+			// Page on which to add this section of options
+			'settings_page_general_settings'                   
+		);
+		unset($args);
+		$args = array (
+							'type'      => 'input',
+							'subtype'   => 'number',
+							'id'    => 'swissfloorball_team_number',
+							'name'      => 'swissfloorball_team_number',
+							'required' => 'true',
+							'get_options_list' => '',
+							'value_type'=>'normal',
+							'wp_data' => 'option'
+					);
+		add_settings_field(
+			'swissfloorball_team_number',
+			'Swiss Floorball Team Number',
+			array( $this, 'settings_page_render_settings_field' ),
+			'settings_page_general_settings',
+			'settings_page_general_section',
+			$args
+		);
 
 		register_setting(
 						'settings_page_general_settings',
-						'swissfloorball_api_key'
+						'swissfloorball_team_number'
 						);
 
 	}
@@ -225,6 +259,34 @@ class Swissunihockey_Admin {
 					# code...
 					break;
 		}
+	}
+
+	/**
+	 * Get the data from swissunihockey.ch
+	 * 
+	 * @since 1.0.0
+	 */
+	public function call_swiss_floorball_team_API() {
+		echo get_option('swissfloorball_team_number');
+				
+		$swissfloorball_team_number = get_option('swissfloorball_team_number');
+		if(isset($swissfloorball_team_number)){
+			$url = "https://api-v2.swissunihockey.ch/api/teams/".$swissfloorball_team_number;
+
+			$curl = curl_init($url);
+			curl_setopt($curl, CURLOPT_URL, $url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			
+			//for debug only!
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+			
+			$resp = curl_exec($curl);
+			curl_close($curl);
+			//return json_decode($resp);
+			echo $response->data->title;
+		}
+		
 	}
 
 
